@@ -1,4 +1,4 @@
-```md
+
 # EmonCMS Client
 
 A Python wrapper for interacting with the EmonCMS API. This library provides methods for reading and writing data to EmonCMS feeds, as well as utilities for managing feeds and querying data.
@@ -27,7 +27,7 @@ The main API is implemented in [`src/emoncms_client.py`](src/emoncms_client.py).
 from emoncms_client import EmonCMSClient
 
 client = EmonCMSClient(server_url="http://emonpi", api_key="YOUR_API_KEY", read_write=False)
-```
+
 
 ### Methods
 - **Feed Management**
