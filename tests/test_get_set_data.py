@@ -21,27 +21,30 @@ FEED_NAME = "electric_Power" # Replace with the exact NAME of the feed you want 
 # Set to None or "" to filter only by name.
 FEED_TAG = "arotherm_plus_105"  # Replace with the exact TAG or set to None/""
 
-START_DATE = "2025-02-06 00:00:00" # Replace with your desired start date (YYYY-MM-DD or other PHP compatible string)
+START_DATE = "2024-02-06 00:00:00" # Replace with your desired start date (YYYY-MM-DD or other PHP compatible string)
 END_DATE = "2025-02-07 00:00:00"   # Replace with your desired end date (YYYY-MM-DD or other PHP compatible string, e.g., "now")
-INTERVAL = 3600 # Interval in seconds for aggregation (86400 for daily, 3600 for hourly, etc.)
+INTERVAL = 60 # Interval in seconds for aggregation (86400 for daily, 3600 for hourly, etc.)
+AVERAGE = True # Set to True to get average values, False for raw values
 # --- End Configuration ---
 
 # --- Test Script to read data---
 client = EmonCMSClient(server_url=EMONCMS_URL, api_key=API_KEY_RO)
-client.get_feed_data_by_name(
+data = client.get_feed_data_by_name(
     feed_name=FEED_NAME,
     tag=FEED_TAG,
     start_time=START_DATE,
     end_time=END_DATE,
     interval=INTERVAL,
-    average=True,
+    average=AVERAGE,
 )
 # %% create new feed
 client = EmonCMSClient(server_url=EMONCMS_URL, api_key=API_KEY_RW, read_write = True)
-NEW_FEED_NAME = "TEST_3"
+NEW_FEED_NAME = "TEST_6"
 NEW_FEED_TAG = "TESTTAG"
-client.create_feed(name = NEW_FEED_NAME,
+feed_id = client.create_feed(name = NEW_FEED_NAME,
                    tag = NEW_FEED_TAG,
-                   engine = 5,
+                   engine = 5, # PHPFINA
                    options = {"interval":30})
-# %%
+
+# %% write previously extracted data to new feed
+client.insert_multiple_data_points(feed_id=feed_id, data=data)

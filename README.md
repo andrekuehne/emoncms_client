@@ -1,0 +1,1 @@
+A simple client to read/write from an emoncms instance via its API
