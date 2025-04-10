@@ -111,7 +111,7 @@ from(bucket: "Home_Assistant")
 
 # === RUN QUERY ===
 client_influx = InfluxDBClient(url=url, token=token, org=org)
-query_api = client.query_api()
+query_api = client_influx.query_api()
 df = query_api.query_data_frame(query)
 df_clean = (
     df[["_time", "_value"]]
