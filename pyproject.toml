@@ -5,10 +5,16 @@ description = "Python wrapper for emoncms API"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "cdsapi>=0.7.5",
+    "dask>=2025.3.0",
     "dotenv>=0.9.9",
+    "h5netcdf>=1.6.1",
     "influxdb-client>=1.48.0",
     "ipykernel>=6.29.5",
+    "matplotlib>=3.10.1",
+    "netcdf4>=1.7.2",
     "numpy>=2.2.4",
     "pandas>=2.2.3",
     "requests>=2.32.3",
+    "xarray>=2025.3.1",
 ]

@@ -12,3 +12,6 @@ wheels/
 
 # for local storage of API keys
 .env 
+
+# Solar data
+*.nc
