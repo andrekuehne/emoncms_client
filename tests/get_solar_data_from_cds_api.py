@@ -14,8 +14,8 @@ from emoncms_client import EmonCMSClient
 lat_center = 52.601
 lon_center = 13.456
 delta = 0.002  # Half-width of bounding box in degrees
-start_date = '2025-04-29'
-end_date = '2025-5-05'
+start_date = '2025-04-01'
+end_date = '2025-05-01'
 dataset = 'reanalysis-era5-land' #'reanalysis-era5-single-levels'
 variable = 'surface_solar_radiation_downwards'
 # %% Download solar radiation for a date range across months/years
@@ -88,10 +88,17 @@ API_KEY_RW = os.getenv("API_KEY_RW") # R/W
 client_emon = EmonCMSClient(server_url=EMONCMS_URL, api_key=API_KEY_RW, read_write = True)
 NEW_FEED_NAME = dataset + "_" + variable
 NEW_FEED_TAG = "cds"
-feed_id = client_emon.create_feed(name = NEW_FEED_NAME,
+try:
+    feed_id = client_emon.create_feed(name = NEW_FEED_NAME,
                    tag = NEW_FEED_TAG,
                    engine = 5, # PHPFINA
                    options = {"interval":3600})
+except:
+    # If the feed already exists, get its ID
+    feeds = client_emon.list_feeds()
+    feed_id = feeds.loc[(feeds['name'] == NEW_FEED_NAME) & (feeds['tag'] == NEW_FEED_TAG), 'id'].values[0]
+    print(f"Feed '{NEW_FEED_NAME}' already exists with ID: {feed_id}")
+
 
 # %% fill feed with previously read data
 client_emon.insert_multiple_data_points(feed_id=feed_id, data=df_emoncms)
